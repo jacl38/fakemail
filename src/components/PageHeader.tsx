@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 const styles = {
 	container: tw(
-		`h-20 max-md:h-40 shrink-0`,
+		`h-20 max-sm:h-[7rem] max-md:h-32 shrink-0`,
 		`border-b-2`,
 		`flex justify-between items-start`,
 		`py-2 px-4`,
@@ -36,14 +36,14 @@ const styles = {
 	search: {
 		container: tw(
 			`absolute`,
-			`w-11/12 bottom-0 md:w-1/2`,
+			`sm:w-11/12 w-full max-sm:-bottom-6 max-md:-bottom-3 md:w-1/2`,
 			`left-1/2 md:top-1/2 -translate-x-1/2 -translate-y-1/2`,
 			`h-12`,
-			`rounded-full`,
+			`sm:rounded-full`,
 			`flex`,
 			`overflow-hidden`,
 			`border-2`,
-			`hover:shadow-md transition-shadow`,
+			`hover:shadow-md transition-all`,
 			`divide-x-2`,
 		),
 		textBox: tw(

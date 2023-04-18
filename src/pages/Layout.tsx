@@ -9,13 +9,16 @@ const styles = {
 		`bg-neutral-100`
 	),
 	contentContainer: tw(
-		`p-8 h-[calc(100vh-5rem)] max-md:h-[calc(100vh-10rem)]`
+		`sm:p-8 h-[calc(100vh-5rem)] max-sm:h-[calc(100vh-7rem)] max-md:h-[calc(100vh-8rem)]`,
+		`transition-all`
 	),
 	outletContainer: tw(
-		`h-full overflow-hidden`,
-		`rounded-3xl`,
+		`h-full`,
+		`sm:rounded-3xl`,
 		`flex flex-col`,
-		`bg-white border-2 shadow-md`
+		`bg-white sm:border-2 shadow-md`,
+		`overflow-hidden`,
+		`transition-all`
 	)
 }
 

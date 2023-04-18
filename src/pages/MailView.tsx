@@ -4,13 +4,12 @@ import MailItem from "../components/MailItem"
 
 const styles = {
 	outerContainer: tw(
-		`h-full`,
-		`overflow-hidden`,
+		`flex flex-col h-full`
 	),
 	mailList: {
 		container: tw(
-			`h-full overflow-y-scroll`,
-			`space-y-2 p-4`
+			`py-4 px-2.5 space-y-2`,
+			`overflow-y-scroll`
 		)
 	}
 }

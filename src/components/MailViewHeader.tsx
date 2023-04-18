@@ -3,10 +3,10 @@ import { tw } from "../utility/tailwindUtil"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
 
 const styles = {
-	topBar: tw(
-		`h-16`,
+	outerContainer: tw(
+		`h-16 shrink-0`,
 		`flex justify-between items-center`,
-		`px-8`,
+		`px-6`,
 		`shadow-md`,
 		`relative`
 	),
@@ -24,7 +24,8 @@ const styles = {
 		container: tw(
 			`bg-blue-500`,
 			`h-16`,
-			`2xl:w-[80rem] xl:w-[64rem] lg:w-[48rem] md:w-[32rem] sm:w-3/5 max-sm:w-2/5`,
+			`2xl:w-[74rem] xl:w-[60rem] lg:w-[42rem] md:w-[27rem] sm:w-7/12 max-sm:w-2/5`,
+			`transition-all`,
 			`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`,
 			`flex items-stretch`,
 			`overflow-x-scroll overflow-y-hidden`
@@ -53,7 +54,7 @@ const styles = {
 }
 
 const MailViewHeader = () => {
-	return <div className={styles.topBar}>
+	return <div className={styles.outerContainer}>
 
 		<div>
 			<label htmlFor="selectAllCheckbox" className={styles.checkBox.container}>
