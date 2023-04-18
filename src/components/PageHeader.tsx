@@ -6,14 +6,15 @@ const styles = {
 	container: tw(
 		`h-20 max-sm:h-[7rem] max-md:h-32 shrink-0`,
 		`border-b-2`,
-		`flex justify-between items-start`,
+		`flex justify-between items-center max-md:items-start`,
 		`py-2 px-4`,
 		`bg-white`,
-		`relative`
+		`relative`,
+		`transition-all duration-200`,
 	),
 	icon: {
 		small: tw(`w-8`),
-		medium: tw(`w-14`)
+		medium: tw(`w-12`)
 	},
 	logo: {
 		container: tw(
@@ -43,7 +44,8 @@ const styles = {
 			`flex`,
 			`overflow-hidden`,
 			`border-2`,
-			`hover:shadow-md transition-all`,
+			`hover:shadow-md`,
+			`transition-all duration-500`,
 			`divide-x-2`,
 		),
 		textBox: tw(
