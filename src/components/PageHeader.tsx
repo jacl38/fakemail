@@ -1,14 +1,15 @@
-import { AdjustmentsHorizontalIcon, Cog6ToothIcon, EnvelopeIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, QueueListIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { AdjustmentsHorizontalIcon, Cog6ToothIcon, EnvelopeIcon, MagnifyingGlassCircleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { tw } from "../utility/tailwindUtil";
 import { NavLink } from "react-router-dom";
 
 const styles = {
 	container: tw(
-		`h-20`,
+		`h-20 max-md:h-40 shrink-0`,
 		`border-b-2`,
-		`flex justify-between relative`,
-		`p-8`,
-		`bg-white`
+		`flex justify-between items-start`,
+		`py-2 px-4`,
+		`bg-white`,
+		`relative`
 	),
 	icon: {
 		small: tw(`w-8`),
@@ -24,22 +25,19 @@ const styles = {
 		),
 		text: tw(
 			`text-3xl font-light`,
-			`max-md:hidden`
 		)
 	},
 	items: {
 		container: tw(
 			`flex items-center`,
-			`h-full`,
-			`space-x-4`
+			`space-x-2`
 		),
 	},
 	search: {
 		container: tw(
 			`absolute`,
-			`max-w-[45%] min-w-[22rem] w-full`,
-			`max-md:w-24 max-md:max-w-24`,
-			`left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`,
+			`w-11/12 bottom-0 md:w-1/2`,
+			`left-1/2 md:top-1/2 -translate-x-1/2 -translate-y-1/2`,
 			`h-12`,
 			`rounded-full`,
 			`flex`,
@@ -66,7 +64,7 @@ const styles = {
 	}
 }
 
-const Header = () => {
+const PageHeader = () => {
 	return <header className={styles.container}>
 		<div className={styles.logo.container}>
 
@@ -94,4 +92,4 @@ const Header = () => {
 	</header>
 }
 
-export default Header;
+export default PageHeader;

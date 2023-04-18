@@ -1,34 +1,33 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
+import PageHeader from "../components/PageHeader";
 import { tw } from "../utility/tailwindUtil";
 
 const styles = {
 	outerContainer: tw(
-		`h-full`,
-		`flex flex-col`
-	),
-	contentContainer: tw(
-		`w-full h-full p-4`,
+		`w-full h-full`,
+		`flex flex-col`,
 		`bg-neutral-100`
 	),
+	contentContainer: tw(
+		`p-8 h-[calc(100vh-5rem)] max-md:h-[calc(100vh-10rem)]`
+	),
 	outletContainer: tw(
-		`w-full h-full`,
-		`rounded-2xl overflow-hidden`,
-		`bg-white`,
-		`border-2`,
-		`shadow-md`
+		`h-full overflow-hidden`,
+		`rounded-3xl`,
+		`flex flex-col`,
+		`bg-white border-2 shadow-md`
 	)
 }
 
 const Layout = () => {
-	return <main className={styles.outerContainer}>
-		<Header />
+	return <div className={styles.outerContainer}>
+		<PageHeader />
 		<div className={styles.contentContainer}>
 			<div className={styles.outletContainer}>
 				<Outlet />
 			</div>
 		</div>
-	</main>
+	</div>
 }
 
 export default Layout;
