@@ -3,7 +3,7 @@ import { useRef } from "react";
 
 
 const MailView = () => {
-	return <div className="bg-green-500 h-full">
+	return <div className="h-full">
 		mail
 	</div>
 }
