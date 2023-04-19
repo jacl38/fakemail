@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { tw } from "../utility/tailwindUtil";
+import { Email } from "../utility/storedTypes";
+import { timeSpanToMilliseconds } from "../utility/mathUtils";
 
 const styles = {
 	container: tw(
@@ -33,7 +35,8 @@ const styles = {
 			`sm:w-36 w-24`,
 			`font-bold`,
 			`truncate`,
-			`mr-4`
+			`mr-4`,
+			`border-r-2`
 		),
 		subject: tw(
 			`grow w-0`,
@@ -48,16 +51,32 @@ const styles = {
 	},
 	dateContent: {
 		container: tw(
-			`flex items-center shrink-0`,
-			`px-1.5`
+			`flex items-center justify-center`,
+			`shrink-0 w-16`,
 		),
 		date: tw(
-			`font-bold tracking-tight text-xs`
+			`font-bold text-xs whitespace-nowrap`
 		)
 	}
 }
 
-const MailItem = (props: { id: string }) => {
+const MailItem = (props: Email) => {
+	const mailDate = new Date(props.timestamp.valueOf());
+	const mailAge = (new Date().valueOf() - mailDate.valueOf());
+
+	// default: full mm/dd/yyyy date string
+	let dateString = mailDate.toLocaleDateString(undefined, { dateStyle: "short" });
+	
+	// If the mail was received today
+	if(mailDate.getDate() == new Date().getDate()) {
+		dateString = mailDate.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })
+	} else {
+		// If the mail was received within a week
+		if(mailAge < timeSpanToMilliseconds({ weeks: 1 })) {
+			dateString = mailDate.toLocaleDateString(undefined, { weekday: "short" })
+		}
+	}
+
 	return <div className={styles.container}>
 		<div className={styles.items.container}>
 
@@ -71,14 +90,14 @@ const MailItem = (props: { id: string }) => {
 		</div>
 
 		<NavLink to="/" className={styles.content.container}>
-			<span className={styles.content.sender}>the sender of the email</span>
-			<span className={styles.content.subject}>the subject of the email that was received the subject of the email that was received</span>
+			<span className={styles.content.sender}>{props.sender.name}</span>
+			<span className={styles.content.subject}>{props.subject}</span>
 			<div className="collapse w-full"></div>
-			<p className={styles.content.body}>{"body ".repeat(200)}</p>
+			<p className={styles.content.body}>{props.body}</p>
 		</NavLink>
 		
 		<div className={styles.dateContent.container}>
-			<p className={styles.dateContent.date}>{new Date().toLocaleString(undefined, { month: "short", day: "numeric" })}</p>
+			<p className={styles.dateContent.date}>{dateString}</p>
 		</div>
 	</div>
 }
