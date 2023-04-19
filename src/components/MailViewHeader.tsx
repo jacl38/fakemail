@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom"
 import { tw } from "../utility/tailwindUtil"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
 import MailCategoryItem from "./MailCategoryItem"
+import useLocalStorage from "../hooks/useLocalStorage"
+import { Category } from "../utility/storedTypes"
 
 const styles = {
 	outerContainer: tw(
@@ -28,7 +30,7 @@ const styles = {
 			`transition-all`,
 			`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`,
 			`flex items-stretch`,
-			`overflow-x-scroll overflow-y-hidden`
+			`overflow-x-scroll overflow-y-hidden`,
 		)
 	},
 	pageLinks: {
@@ -59,6 +61,8 @@ const styles = {
 }
 
 const MailViewHeader = () => {
+	const [categories, setCategories] = useLocalStorage("categories", []);
+
 	return <div className={styles.outerContainer}>
 
 		<div>
@@ -68,7 +72,7 @@ const MailViewHeader = () => {
 		</div>
 
 		<div className={styles.sectionSelector.container}>
-			{[...Array(50)].map((_, i) => <MailCategoryItem />)}
+			{(categories as Category[] ?? []).map((category, i) => <MailCategoryItem label={category.label} id={category.id} color={category.color} icon={category.icon ?? "envelope"}/>)}
 		</div>
 
 		<div className={styles.pageLinks.outerContainer}>

@@ -1,5 +1,6 @@
-import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import { tw } from "../utility/tailwindUtil";
+import { Category } from "../utility/storedTypes";
+import { icons } from "../utility/icons";
 
 const styles = {
 	outerContainer: tw(
@@ -13,22 +14,23 @@ const styles = {
 			`flex items-center space-x-2`
 		),
 		icon: tw(
-			`w-6 inline shrink-0`,
-			`text-rose-700`
+			`w-6 inline shrink-0`
 		),
 		title: tw(
-			`truncate`
+			`truncate`,
+			`max-sm:w-full`
 		),
 	}
 }
 
-const MailCategoryItem = () => {
+
+const MailCategoryItem = (props: Category) => {
 	return <div className={styles.outerContainer}>
 		<div className={styles.label.container}>
-			<EnvelopeIcon className={styles.label.icon}/>
-			<span className={styles.label.title}>Category Name the name of the category</span>
+			{icons[Object.keys(icons).includes(props.icon) ? props.icon : "envelope"]({ color: props.color ?? "#be123c", className: styles.label.icon })}
+			<p className={styles.label.title}>{props.label}</p>
 		</div>
-		<div className="w-full bg-blue-200 h-1 rounded-t-full"></div>
+		<div style={{ backgroundColor: props.color ?? "#be123c" }} className="w-full h-1 rounded-t-full"></div>
 	</div>
 }
 
