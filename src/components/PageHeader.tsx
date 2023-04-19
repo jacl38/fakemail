@@ -1,4 +1,4 @@
-import { AdjustmentsHorizontalIcon, Cog6ToothIcon, EnvelopeIcon, MagnifyingGlassCircleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { AdjustmentsHorizontalIcon, Cog6ToothIcon, EnvelopeIcon, MagnifyingGlassCircleIcon, PencilIcon, PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { tw } from "../utility/tailwindUtil";
 import { NavLink } from "react-router-dom";
 
@@ -31,8 +31,29 @@ const styles = {
 	items: {
 		container: tw(
 			`flex items-center`,
-			`space-x-2`
 		),
+		button: tw(
+			`w-12 h-12`,
+			`flex items-center justify-center`
+		),
+		newEmailButton: {
+			container: tw(
+				`lg:bg-neutral-200 max-lg:hover:bg-neutral-200 rounded-full`,
+				`flex p-3`,
+				`overflow-hidden`,
+				`lg:hover:w-[8.5rem]`,
+				`lg:hover:justify-start`,
+				`group transition-all lg:duration-300`,
+			),
+			label: tw(
+				`font-semibold text-lg`,
+				`ml-2`,
+				`opacity-0 lg:group-hover:opacity-100`,
+				`collapse lg:group-hover:visible`,
+				`whitespace-nowrap`,
+				`transition-all duration-150`
+			)
+		}
 	},
 	search: {
 		container: tw(
@@ -88,8 +109,20 @@ const PageHeader = () => {
 			</button>
 		</div>
 		<div className={styles.items.container}>
-			<Cog6ToothIcon className={tw(styles.icon.medium, "text-neutral-400")} />
-			<UserCircleIcon className={tw(styles.icon.medium, "text-blue-600")} />
+
+			<button className={tw(styles.items.button, styles.items.newEmailButton.container)}>
+				<PencilIcon className={tw(styles.icon.small, "text-slate-600")} />
+				<p className={styles.items.newEmailButton.label}>New Email</p>
+			</button>
+
+			<button className={styles.items.button}>
+				<Cog6ToothIcon className={tw(styles.icon.small, "text-neutral-400")} />
+			</button>
+
+			<button className={styles.items.button}>
+				<UserCircleIcon className={tw(styles.icon.small, "text-blue-600")} />
+			</button>
+
 		</div>
 	</header>
 }
