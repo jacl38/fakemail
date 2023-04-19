@@ -14,11 +14,11 @@ const styles = {
 	items: {
 		container: tw(
 			`flex max-sm:flex-col`,
-			`items-center justify-center`,
-			`pl-3.5 pr-2`
+			`items-center justify-center`
 		),
 		button: tw(
-			`w-8 h-8`,
+			`sm:pl-6 sm:last-of-type:pr-4 h-full`,
+			`max-sm:pl-6 max-sm:pr-5`,
 			`cursor-pointer`,
 			`flex items-center justify-center`
 		)
@@ -74,7 +74,7 @@ const MailItem = (props: { id: string }) => {
 			<span className={styles.content.sender}>the sender of the email</span>
 			<span className={styles.content.subject}>the subject of the email that was received the subject of the email that was received</span>
 			<div className="collapse w-full"></div>
-			<p className={styles.content.body}>{"body ".repeat(20)}</p>
+			<p className={styles.content.body}>{"body ".repeat(200)}</p>
 		</NavLink>
 		
 		<div className={styles.dateContent.container}>
