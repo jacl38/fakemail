@@ -1,6 +1,7 @@
 import { tw } from "../utility/tailwindUtil";
 import { Category } from "../utility/storedTypes";
 import { icons } from "../utility/icons";
+import { NavLink } from "react-router-dom";
 
 const styles = {
 	outerContainer: tw(
@@ -24,14 +25,14 @@ const styles = {
 }
 
 
-const MailCategoryItem = (props: Category) => {
-	return <div className={styles.outerContainer}>
+const MailCategoryItem = (props: Category & { onSelect?: (id: string) => void }) => {
+	return <NavLink to={`/?category=${props.id}`} onClick={e => props.onSelect?.(props.id)} className={styles.outerContainer}>
 		<div className={styles.label.container}>
 			{icons[Object.keys(icons).includes(props.icon) ? props.icon : "envelope"]({ color: props.color ?? "#be123c", className: styles.label.icon })}
 			<p className={styles.label.title}>{props.label}</p>
 		</div>
 		<div style={{ backgroundColor: props.color ?? "#be123c" }} className="w-full h-1 rounded-t-full"></div>
-	</div>
+	</NavLink>
 }
 
 export default MailCategoryItem;

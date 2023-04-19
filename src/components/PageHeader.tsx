@@ -6,7 +6,7 @@ const styles = {
 	container: tw(
 		`h-20 max-sm:h-[7rem] max-md:h-32 shrink-0`,
 		`border-b-2`,
-		`flex justify-between items-center max-md:items-start`,
+		`flex justify-between items-center max-md:pb-[4.25rem]`,
 		`py-2 px-4`,
 		`bg-white`,
 		`relative`,
@@ -66,7 +66,7 @@ const styles = {
 			`overflow-hidden`,
 			`border-2`,
 			`hover:shadow-md`,
-			`transition-all duration-500`,
+			`transition-all ease-in-out md:ease-out md:duration-150 duration-500`,
 			`divide-x-2`,
 		),
 		textBox: tw(
@@ -91,7 +91,7 @@ const PageHeader = () => {
 	return <header className={styles.container}>
 		<div className={styles.logo.container}>
 
-			<NavLink to="/" className={styles.logo.link}>
+			<NavLink to="/" reloadDocument className={styles.logo.link}>
 				<EnvelopeIcon className={tw(styles.icon.medium, "text-rose-700")} />
 				<p className={styles.logo.text}>fak<span className="font-semibold">email</span></p>
 			</NavLink>

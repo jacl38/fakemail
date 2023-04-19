@@ -60,8 +60,9 @@ const styles = {
 	}
 }
 
-const MailViewHeader = () => {
+const MailViewHeader = (props: { selectedCategory: string, onSelect?: (id: string) => void }) => {
 	const [categories, setCategories] = useLocalStorage("categories", []);
+	const [emails, setEmails] = useLocalStorage("emails", []);
 
 	return <div className={styles.outerContainer}>
 
@@ -72,11 +73,11 @@ const MailViewHeader = () => {
 		</div>
 
 		<div className={styles.sectionSelector.container}>
-			{(categories as Category[] ?? []).map((category, i) => <MailCategoryItem label={category.label} id={category.id} color={category.color} icon={category.icon ?? "envelope"}/>)}
+			{(categories as Category[] ?? []).map((category, i) => <MailCategoryItem {...category} onSelect={props.onSelect}/>)}
 		</div>
 
 		<div className={styles.pageLinks.outerContainer}>
-			1-50 / 200
+			1-{Math.min(emails?.length, 50)} / {emails?.length}
 			<div className={styles.pageLinks.iconContainer}>
 				<NavLink className={styles.pageLinks.link} to="/"><ChevronLeftIcon className={styles.pageLinks.icon} /></NavLink>
 				<NavLink className={styles.pageLinks.link} to="/"><ChevronRightIcon className={styles.pageLinks.icon} /></NavLink>
