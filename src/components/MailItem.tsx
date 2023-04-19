@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { tw } from "../utility/tailwindUtil";
 import { Email } from "../utility/storedTypes";
 import { timeSpanToMilliseconds } from "../utility/mathUtils";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const styles = {
 	container: tw(
@@ -9,9 +11,11 @@ const styles = {
 		`block`,
 		`border-2`,
 		`hover:shadow-md`,
-		`transition-all`,
+		`transition-shadow`,
 		`flex items-stretch`,
 		`divide-x-2`,
+		`origin-left`
+		// `animate-fadeIn`
 	),
 	items: {
 		container: tw(
@@ -60,7 +64,7 @@ const styles = {
 	}
 }
 
-const MailItem = (props: Email) => {
+const MailItem = (props: Email & { index: number }) => {
 	const mailDate = new Date(props.timestamp.valueOf());
 	const mailAge = (new Date().valueOf() - mailDate.valueOf());
 
@@ -77,7 +81,12 @@ const MailItem = (props: Email) => {
 		}
 	}
 
-	return <div className={styles.container}>
+	return <motion.div
+		initial={{ scale: 0.9, opacity: 0, translateY: 20 }}
+		whileInView={{ scale: 1, opacity: 1, translateY: 0, transition: { ease: "backOut" } }}
+		exit={{ scale: 0.9, opacity: 0, translateX: -50 }}
+		viewport={{ once: true }}
+		className={styles.container}>
 		<div className={styles.items.container}>
 
  			<label htmlFor={`selectEmailCheckbox-${props.id}`} className={styles.items.button}>
@@ -99,7 +108,7 @@ const MailItem = (props: Email) => {
 		<div className={styles.dateContent.container}>
 			<p className={styles.dateContent.date}>{dateString}</p>
 		</div>
-	</div>
+	</motion.div>
 }
 
 export default MailItem;

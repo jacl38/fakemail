@@ -1,25 +1,51 @@
 import { useEffect, useState } from "react"
 
-const useLocalStorage = (key: string, defaultValue: any) => {
-	const [storedValue, setStoredValue] = useState();
-	const [valueFound, setValueFound] = useState(false);
-	
-	useEffect(() => {
+const useLocalStorage = <T>(key: string, defaultValue: T) => {
+	const [storedValue, setStoredValue] = useState<T>(() => {
+		if(typeof window === "undefined") return defaultValue;
+
 		try {
 			const item = window.localStorage.getItem(key);
-			setStoredValue(item ? JSON.parse(item) : defaultValue);
-			setValueFound(true);
-		} catch(e) { console.error(e); }
-	}, [key]);
+			return item ? JSON.parse(item) : defaultValue;
+		} catch(e) {
+			console.error(e);
+			return defaultValue;
+		}
+	});
 
-	const setValue = (value: any) => {
+	const setValue = (value: T | ((v: T) => T)) => {
 		try {
-			window.localStorage.setItem(key, JSON.stringify(value));
-			setStoredValue(value);
-		} catch(e) { console.error(e); }
+			const newValue = value instanceof Function
+				? value(storedValue)
+				: value;
+			setStoredValue(newValue);
+			if(typeof window !== "undefined") {
+				window.localStorage.setItem(key, JSON.stringify(newValue));
+			}
+			window.dispatchEvent(new Event("storage"));
+		} catch (e) { console.error(e); }
 	}
 
-	return [storedValue as typeof defaultValue, setValue] as const;
+	useEffect(() => {
+		const forceUpdate = () => {
+			setStoredValue(() => {
+				if(typeof window === "undefined") return defaultValue;
+		
+				try {
+					const item = window.localStorage.getItem(key);
+					return item ? JSON.parse(item) : defaultValue;
+				} catch(e) {
+					console.error(e);
+					return defaultValue;
+				}
+			})
+		}
+		window.addEventListener("storage", forceUpdate);
+
+		return () => { removeEventListener("storage", forceUpdate); }
+	}, []);
+
+	return [storedValue as T, setValue] as const;
 }
 
 export default useLocalStorage;

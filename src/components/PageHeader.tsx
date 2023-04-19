@@ -1,6 +1,9 @@
 import { AdjustmentsHorizontalIcon, Cog6ToothIcon, EnvelopeIcon, MagnifyingGlassCircleIcon, PencilIcon, PencilSquareIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { tw } from "../utility/tailwindUtil";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import ComposeBox from "./ComposeBox";
+import { AnimatePresence } from "framer-motion";
 
 const styles = {
 	container: tw(
@@ -88,43 +91,49 @@ const styles = {
 }
 
 const PageHeader = () => {
-	return <header className={styles.container}>
-		<div className={styles.logo.container}>
+	const [showComposeBox, setShowComposeBox] = useState(false);
 
-			<NavLink to="/" reloadDocument className={styles.logo.link}>
-				<EnvelopeIcon className={tw(styles.icon.medium, "text-rose-700")} />
-				<p className={styles.logo.text}>fak<span className="font-semibold">email</span></p>
-			</NavLink>
+	return <>
+		<header className={styles.container}>
+			<div className={styles.logo.container}>
 
-		</div>
-		<div className={styles.search.container}>
+				<NavLink to="/" reloadDocument className={styles.logo.link}>
+					<EnvelopeIcon className={tw(styles.icon.medium, "text-rose-700")} />
+					<p className={styles.logo.text}>fak<span className="font-semibold">email</span></p>
+				</NavLink>
 
-			<input placeholder="Search mail" className={styles.search.textBox} type="text" />
+			</div>
+			<div className={styles.search.container}>
 
-			<button className={styles.search.button.base}>
-				<AdjustmentsHorizontalIcon className={tw(styles.icon.small)} />
-			</button>
-			<button className={styles.search.button.base}>
-				<MagnifyingGlassCircleIcon className={tw(styles.icon.small)} />
-			</button>
-		</div>
-		<div className={styles.items.container}>
+				<input placeholder="Search mail" className={styles.search.textBox} type="text" />
 
-			<button className={tw(styles.items.button, styles.items.newEmailButton.container)}>
-				<PencilIcon className={tw(styles.icon.small, "text-slate-600")} />
-				<p className={styles.items.newEmailButton.label}>New Email</p>
-			</button>
+				<button className={styles.search.button.base}>
+					<AdjustmentsHorizontalIcon className={tw(styles.icon.small)} />
+				</button>
+				<button className={styles.search.button.base}>
+					<MagnifyingGlassCircleIcon className={tw(styles.icon.small)} />
+				</button>
+			</div>
+			<div className={styles.items.container}>
 
-			<button className={styles.items.button}>
-				<Cog6ToothIcon className={tw(styles.icon.small, "text-neutral-400")} />
-			</button>
+				<button onClick={e => setShowComposeBox(true)} className={tw(styles.items.button, styles.items.newEmailButton.container)}>
+					<PencilIcon className={tw(styles.icon.small, "text-slate-600")} />
+					<p className={styles.items.newEmailButton.label}>New Email</p>
+				</button>
 
-			<button className={styles.items.button}>
-				<UserCircleIcon className={tw(styles.icon.small, "text-blue-600")} />
-			</button>
+				<button className={styles.items.button}>
+					<Cog6ToothIcon className={tw(styles.icon.small, "text-neutral-400")} />
+				</button>
 
-		</div>
-	</header>
+				<button className={styles.items.button}>
+					<UserCircleIcon className={tw(styles.icon.small, "text-blue-600")} />
+				</button>
+			</div>
+		</header>
+		<AnimatePresence>
+			{showComposeBox && <ComposeBox onClose={() => setShowComposeBox(false)} />}
+		</AnimatePresence>
+	</>
 }
 
 export default PageHeader;

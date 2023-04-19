@@ -3,7 +3,8 @@ import { tw } from "../utility/tailwindUtil"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
 import MailCategoryItem from "./MailCategoryItem"
 import useLocalStorage from "../hooks/useLocalStorage"
-import { Category } from "../utility/storedTypes"
+import { Category, Email } from "../utility/storedTypes"
+import { motion } from "framer-motion"
 
 const styles = {
 	outerContainer: tw(
@@ -60,10 +61,12 @@ const styles = {
 	}
 }
 
-const MailViewHeader = (props: { selectedCategory: string, onSelect?: (id: string) => void }) => {
+const MailViewHeader = (props: { selectedCategory: string, selectedIndex: number, onSelect?: (id: string) => void }) => {
 	const [categories, setCategories] = useLocalStorage("categories", []);
 	const [emails, setEmails] = useLocalStorage("emails", []);
 
+	const filteredEmails = (emails as Email[] ?? []).filter(email => email.categoryId == props.selectedCategory || props.selectedCategory == "all-mail");
+	
 	return <div className={styles.outerContainer}>
 
 		<div>
@@ -74,10 +77,14 @@ const MailViewHeader = (props: { selectedCategory: string, onSelect?: (id: strin
 
 		<div className={styles.sectionSelector.container}>
 			{(categories as Category[] ?? []).map((category, i) => <MailCategoryItem {...category} onSelect={props.onSelect}/>)}
+			<motion.div layout
+				style={{ left: props.selectedIndex * 192 }}
+				transition={{ ease: "backOut" }}
+				className="absolute w-48 h-full bg-black opacity-5 rounded-t-2xl top-1"></motion.div>
 		</div>
 
 		<div className={styles.pageLinks.outerContainer}>
-			1-{Math.min(emails?.length, 50)} / {emails?.length}
+			1-{Math.min(filteredEmails.length, 50)} / {filteredEmails.length}
 			<div className={styles.pageLinks.iconContainer}>
 				<NavLink className={styles.pageLinks.link} to="/"><ChevronLeftIcon className={styles.pageLinks.icon} /></NavLink>
 				<NavLink className={styles.pageLinks.link} to="/"><ChevronRightIcon className={styles.pageLinks.icon} /></NavLink>

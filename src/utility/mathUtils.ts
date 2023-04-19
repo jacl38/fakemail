@@ -1,4 +1,4 @@
-
+import Rand from "rand-seed";
 
 export const timeSpanToMilliseconds = (timeSpan: {
 	weeks?: number,
@@ -17,4 +17,13 @@ export const timeSpanToMilliseconds = (timeSpan: {
 	ms += (timeSpan.weeks   ?? 0) * 1000 * 60 * 60 * 24 * 7;
 	
 	return ms;
+}
+
+export const shuffleArray = (array: any[], seed: number) => {
+	const rand = new Rand(seed.toString());
+	for(let i = 0; i < array.length; i++) {
+		const j = Math.floor(rand.next() * array.length);
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
 }

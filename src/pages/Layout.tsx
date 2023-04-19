@@ -2,9 +2,11 @@ import { Outlet } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import { tw } from "../utility/tailwindUtil";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Category, Email } from "../utility/storedTypes";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { shuffleArray } from "../utility/mathUtils";
+import ComposeBox from "../components/ComposeBox";
 
 const styles = {
 	outerContainer: tw(
@@ -28,8 +30,8 @@ const styles = {
 
 const Layout = () => {
 	const [initialSetup, setInitialSetup] = useLocalStorage("initial-setup", false);
-	const [categories, setCategories] = useLocalStorage("categories", []);
-	const [emails, setEmails] = useLocalStorage("emails", []);
+	const [categories, setCategories] = useLocalStorage("categories", [] as Category[]);
+	const [emails, setEmails] = useLocalStorage("emails", [] as Email[]);
 
 	useEffect(() => {
 		console.log(`Initial setup value: ${initialSetup}`);
@@ -39,21 +41,29 @@ const Layout = () => {
 			const categories: Category[] = [
 				{ id: "all-mail", label: "All mail", color: "#be123c", icon: "envelope" },
 				{ id: "starred", label: "Starred", color: "#fbbf24", icon: "star" },
-				{ id: "drafts", label: "Drafts", color: "#475569", icon: "pencil" }
+				{ id: "sent", label: "Sent", color: "#475569", icon: "arrowUpTray" },
 			];
 
 			setCategories(categories);
 			
-			const emails: Email[] = [
-				{
-					id: "0",
-					categoryId: "all-mail",
-					sender: { address: "sender@email.com", name: "Email Sender" },
-					subject: "This is a test email",
-					body: "I am sending you a test email",
-					timestamp: new Date()
-				}
-			]
+			let emails: Email[] = [];
+			emails.push({
+				id: "0",
+				categoryId: "starred",
+				sender: { address: "admin@fakemail.jclark.space", name: "fakemail Admin" },
+				subject: "Your new fakemail account",
+				body: "body",
+				timestamp: new Date()
+			});
+
+			emails.push(...[...Array(50)].map((_, i) => ({
+				id: (i+1).toString(),
+				categoryId: categories[Math.floor(Math.random() * categories.length)].id,
+				sender: { address: "sender@email.com", name: "Email Sender" },
+				subject: shuffleArray("this is a test email".split(" "), i).join(" "),
+				body: shuffleArray("this is the body content of the test email".split(" "), i).join(" "),
+				timestamp: new Date()
+			})));
 
 			setEmails(emails);
 
