@@ -78,12 +78,14 @@ const ComposeBox = (props: { onClose?: () => void }) => {
 		const newEmail: Email = {
 			id: highestEmailID + 1,
 			sender: { address: "me@fakemail.jclark.space", name: "Me" },
+			recipient: { address: toField.current?.value ?? "", name: "" },
 			subject: subjectField.current?.value ?? "",
 			body: textField.current?.value ?? "",
 			categoryId: "sent",
 			timestamp: Date.now()
 		}
 		setEmails([...emails, newEmail]);
+		props.onClose?.();
 	}
 
 	return <motion.div

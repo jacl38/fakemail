@@ -45,6 +45,7 @@ const App = () => {
 				id: 0,
 				categoryId: "starred",
 				sender: { address: "admin@fakemail.jclark.space", name: "fakemail Admin" },
+				recipient: { address: "me@fakemail.jclark.space", name: "Me" },
 				subject: "Your new fakemail account",
 				body: "body",
 				timestamp: Date.now()
@@ -54,6 +55,7 @@ const App = () => {
 				id: i + 1,
 				categoryId: categories[Math.floor(Math.random() * categories.length)].id,
 				sender: { address: "sender@email.com", name: "Email Sender" },
+				recipient: { address: "me@fakemail.jclark.space", name: "Me" },
 				subject: shuffleArray("this is a test email".split(" "), i).join(" "),
 				body: shuffleArray("this is the body content of the test email".split(" "), i).join(" "),
 				timestamp: Date.now()

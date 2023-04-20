@@ -14,6 +14,10 @@ export interface Email {
 		address: string,
 		name: string
 	},
+	recipient: {
+		address: string,
+		name: string
+	},
 	subject: string,
 	body: string,
 	timestamp: number

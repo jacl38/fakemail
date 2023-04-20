@@ -36,7 +36,7 @@ const styles = {
 			`flex flex-wrap h-full items-center`,
 		),
 		sender: tw(
-			`sm:w-36 w-24`,
+			`sm:w-64 w-36`,
 			`font-bold`,
 			`truncate`,
 			`mr-4`,
@@ -99,7 +99,7 @@ const MailItem = (props: Email & { index: number }) => {
 		</div>
 
 		<NavLink to={`/mail?id=${props.id}`} className={styles.content.container}>
-			<span className={styles.content.sender}>{props.sender.name}</span>
+			<span className={styles.content.sender}>{props.sender.name} &rarr; {props.recipient.name.length > 0 ? props.recipient.name : props.recipient.address}</span>
 			<span className={styles.content.subject}>{props.subject}</span>
 			<div className="collapse w-full"></div>
 			<p className={styles.content.body}>{props.body}</p>

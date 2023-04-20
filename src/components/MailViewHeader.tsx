@@ -62,7 +62,14 @@ const styles = {
 	}
 }
 
-const MailViewHeader = (props: { selectedCategory: string, selectedIndex: number, onSelect?: (id: string) => void }) => {
+const MailViewHeader = (props: {
+	onSelect?: (id: string) => void,
+	selectedCategory: string,
+	selectedIndex: number,
+	onPageChange?: (direction: number) => void
+	selectedPage: number,
+	emailCount: number
+}) => {
 	const { emails, categories } = useContext(MailContext);
 
 	const filteredEmails = (emails as Email[] ?? []).filter(email => email.categoryId == props.selectedCategory || props.selectedCategory == "all-mail");
@@ -84,10 +91,11 @@ const MailViewHeader = (props: { selectedCategory: string, selectedIndex: number
 		</div>
 
 		<div className={styles.pageLinks.outerContainer}>
-			1-{Math.min(filteredEmails.length, 50)} / {filteredEmails.length}
+			{/* {props.selectedPage * 50 + 1}-{Math.min(filteredEmails.length, (props.selectedPage + 1) * 50)} / {filteredEmails.length} */}
+			{props.selectedPage * 50 + 1}-{props.selectedPage * 50 + props.emailCount} / {filteredEmails.length}
 			<div className={styles.pageLinks.iconContainer}>
-				<NavLink className={styles.pageLinks.link} to="/"><ChevronLeftIcon className={styles.pageLinks.icon} /></NavLink>
-				<NavLink className={styles.pageLinks.link} to="/"><ChevronRightIcon className={styles.pageLinks.icon} /></NavLink>
+				<button className={styles.pageLinks.link} onClick={() => props.onPageChange?.(-1)}><ChevronLeftIcon className={styles.pageLinks.icon} /></button>
+				<button className={styles.pageLinks.link} onClick={() => props.onPageChange?.(1)}><ChevronRightIcon className={styles.pageLinks.icon} /></button>
 			</div>
 		</div>
 	</div>

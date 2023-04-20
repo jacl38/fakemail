@@ -19,6 +19,8 @@ export const timeSpanToMilliseconds = (timeSpan: {
 	return ms;
 }
 
+export const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
 export const shuffleArray = (array: any[], seed: number) => {
 	const rand = new Rand(seed.toString());
 	for(let i = 0; i < array.length; i++) {

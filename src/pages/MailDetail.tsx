@@ -64,7 +64,7 @@ const MailDetail = () => {
 			</button>
 			<h2 className={styles.topBar.from.container}>
 				<UserCircleIcon className={tw(styles.icon.small, "max-sm:hidden")} />
-				<span className={styles.topBar.from.label}>{thisEmail?.sender.name}a wjlerjawe lrjawj reawejrlkawjer klaw jrkawekr jawl rjawe rkjawl el</span>
+				<span className={styles.topBar.from.label}>{thisEmail?.sender.name}</span>
 			</h2>
 			<div className="grow"></div>
 			<div className="mr-4 sm:space-x-2 flex max-sm:flex-col max-sm:text-sm items-start animate-fadeIn shrink-0">

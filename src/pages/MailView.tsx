@@ -6,6 +6,7 @@ import { Category, Email } from "../utility/storedTypes"
 import { useContext, useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { MailContext } from "../main"
+import { clamp } from "../utility/mathUtils"
 
 const styles = {
 	outerContainer: tw(
@@ -22,6 +23,8 @@ const styles = {
 const MailView = () => {
 	const [category, setCategory] = useState("all-mail");
 	const { emails, categories } = useContext(MailContext);
+	const [page, setPage] = useState(0);
+	const pageCount = Math.ceil(emails.length / 50);
 
 	useEffect(() => {
 		if((categories ?? []).length == 0) return;
@@ -37,14 +40,23 @@ const MailView = () => {
 		setCategory(selectedCategory);
 	}, [categories]);
 
-	const filteredAndSortedEmails = (emails as Email[] ?? [])
+	let filteredAndSortedEmails = (emails as Email[] ?? [])
 		.filter(email => email.categoryId == category || category == "all-mail");
 	filteredAndSortedEmails.sort((a, b) => b.timestamp - a.timestamp);
+	filteredAndSortedEmails = filteredAndSortedEmails.slice(page * 50, (page + 1) * 50);
 
 	const selectedCategoryIndex = ((categories ?? []) as Category[]).map(c => c.id).indexOf(category);
 
 	return <div className={styles.outerContainer}>
-		<MailViewHeader selectedCategory={category} selectedIndex={selectedCategoryIndex} onSelect={setCategory} />
+		<MailViewHeader
+			selectedCategory={category}
+			selectedIndex={selectedCategoryIndex}
+			onSelect={setCategory}
+			onPageChange={d => {
+				setPage(p => clamp(p + d, 0, pageCount - 1));
+			}}
+			selectedPage={page}
+			emailCount={filteredAndSortedEmails.length}/>
 
 		<div className={styles.mailList.container}>
 			<AnimatePresence>
