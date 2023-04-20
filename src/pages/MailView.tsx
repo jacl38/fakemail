@@ -3,8 +3,9 @@ import MailViewHeader from "../components/MailViewHeader"
 import MailItem from "../components/MailItem"
 import useLocalStorage from "../hooks/useLocalStorage"
 import { Category, Email } from "../utility/storedTypes"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import { MailContext } from "../main"
 
 const styles = {
 	outerContainer: tw(
@@ -20,14 +21,7 @@ const styles = {
 
 const MailView = () => {
 	const [category, setCategory] = useState("all-mail");
-	const [categories, setCategories] = useLocalStorage("categories", [])
-	const [emails, setEmails] = useLocalStorage("emails", []);
-
-	const [asdf, setAsdf] = useLocalStorage("asdf", 69);
-
-	useEffect(() => {
-		if(asdf == 69) setAsdf(420);
-	}, [asdf]);
+	const { emails, categories } = useContext(MailContext);
 
 	useEffect(() => {
 		if((categories ?? []).length == 0) return;
@@ -43,7 +37,9 @@ const MailView = () => {
 		setCategory(selectedCategory);
 	}, [categories]);
 
-	const filteredEmails = (emails as Email[] ?? []).filter(email => email.categoryId == category || category == "all-mail");
+	const filteredAndSortedEmails = (emails as Email[] ?? [])
+		.filter(email => email.categoryId == category || category == "all-mail");
+	filteredAndSortedEmails.sort((a, b) => b.timestamp - a.timestamp);
 
 	const selectedCategoryIndex = ((categories ?? []) as Category[]).map(c => c.id).indexOf(category);
 
@@ -52,7 +48,7 @@ const MailView = () => {
 
 		<div className={styles.mailList.container}>
 			<AnimatePresence>
-				{filteredEmails.map((email, i) => <MailItem key={email.id} {...email} index={i}/>)}
+				{filteredAndSortedEmails.map((email, i) => <MailItem {...email} key={email.id} index={i}/>)}
 			</AnimatePresence>
 		</div>
 

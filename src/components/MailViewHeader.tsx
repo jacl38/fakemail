@@ -2,9 +2,10 @@ import { NavLink } from "react-router-dom"
 import { tw } from "../utility/tailwindUtil"
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
 import MailCategoryItem from "./MailCategoryItem"
-import useLocalStorage from "../hooks/useLocalStorage"
 import { Category, Email } from "../utility/storedTypes"
 import { motion } from "framer-motion"
+import { useContext } from "react"
+import { MailContext } from "../main"
 
 const styles = {
 	outerContainer: tw(
@@ -62,8 +63,7 @@ const styles = {
 }
 
 const MailViewHeader = (props: { selectedCategory: string, selectedIndex: number, onSelect?: (id: string) => void }) => {
-	const [categories, setCategories] = useLocalStorage("categories", []);
-	const [emails, setEmails] = useLocalStorage("emails", []);
+	const { emails, categories } = useContext(MailContext);
 
 	const filteredEmails = (emails as Email[] ?? []).filter(email => email.categoryId == props.selectedCategory || props.selectedCategory == "all-mail");
 	

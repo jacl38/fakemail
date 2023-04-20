@@ -8,7 +8,7 @@ export interface Category {
 }
 
 export interface Email {
-	id: string,
+	id: number,
 	categoryId: string,
 	sender: {
 		address: string,
@@ -16,5 +16,5 @@ export interface Email {
 	},
 	subject: string,
 	body: string,
-	timestamp: Date
+	timestamp: number
 }

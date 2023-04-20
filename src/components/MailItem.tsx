@@ -65,7 +65,7 @@ const styles = {
 }
 
 const MailItem = (props: Email & { index: number }) => {
-	const mailDate = new Date(props.timestamp.valueOf());
+	const mailDate = new Date(props.timestamp);
 	const mailAge = (new Date().valueOf() - mailDate.valueOf());
 
 	// default: full mm/dd/yyyy date string

@@ -46,13 +46,14 @@ const MailDetail = () => {
 	useEffect(() => {
 		if(emails.length == 0) return;
 		const idFromUrl = new URLSearchParams(window.location.search);
-		const id = idFromUrl.get("id") ?? "-1";
-		
+		const idString = idFromUrl.get("id") ?? "";
+		const id = parseInt(idString) ?? -1;
+
 		const foundEmail = emails.find(e => e.id == id);
 		setThisEmail(foundEmail);
 	}, []);
 
-	const emailDate = new Date(thisEmail?.timestamp as unknown as string);
+	const emailDate = new Date(thisEmail?.timestamp ?? 0);
 
 	return <div className={styles.outerContainer}>
 

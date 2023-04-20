@@ -1,7 +1,9 @@
 import { PaperAirplaneIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import useLocalStorage from "../hooks/useLocalStorage";
 import { tw } from "../utility/tailwindUtil";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useContext, useRef } from "react";
+import { MailContext } from "../main";
+import { Email } from "../utility/storedTypes";
 
 const styles = {
 	outerContainer: tw(
@@ -65,6 +67,25 @@ const styles = {
 }
 
 const ComposeBox = (props: { onClose?: () => void }) => {
+	const { emails, setEmails } = useContext(MailContext);
+
+	const toField = useRef<HTMLInputElement>(null);
+	const subjectField = useRef<HTMLInputElement>(null);
+	const textField = useRef<HTMLTextAreaElement>(null);
+
+	const sendEmail = () => {
+		const highestEmailID = emails.sort((a, b) => b.id - a.id)[0].id ?? 0;
+		const newEmail: Email = {
+			id: highestEmailID + 1,
+			sender: { address: "me@fakemail.jclark.space", name: "Me" },
+			subject: subjectField.current?.value ?? "",
+			body: textField.current?.value ?? "",
+			categoryId: "sent",
+			timestamp: Date.now()
+		}
+		setEmails([...emails, newEmail]);
+	}
+
 	return <motion.div
 		onClick={e => props.onClose?.()}
 		initial={{ opacity: 0 }}
@@ -76,11 +97,10 @@ const ComposeBox = (props: { onClose?: () => void }) => {
 			animate={{ scale: 1, translateX: "-50%", translateY: "-50%", opacity: 1, transition: { ease: "backOut" } }}
 			exit={{ scale: 0.8, translateX: "-50%", translateY: "-50%", opacity: 0 }}
 			className={styles.innerContainer}
-			onClick={e => e.stopPropagation()}
-			>
+			onClick={e => e.stopPropagation()}>
 
 			<div className="flex">
-				<input className={tw(styles.inputBar, "grow")} placeholder="To" />
+				<input ref={toField} className={tw(styles.inputBar, "grow")} placeholder="To" />
 				<button
 					onClick={e => props.onClose?.()}
 					className={styles.controls.buttons.exit}>
@@ -88,11 +108,14 @@ const ComposeBox = (props: { onClose?: () => void }) => {
 				</button>
 			</div>
 
-			<input className={styles.inputBar} placeholder="Subject" />
-			<textarea className={styles.textBox} />
+			<input ref={subjectField} className={styles.inputBar} placeholder="Subject" />
+
+			<textarea ref={textField} className={styles.textBox} />
+
 			<div className={styles.controls.container}>
 				<div className="grow"></div>
 				<motion.button
+					onClick={e => sendEmail()}
 					initial={{ scale: 1, paddingLeft: 16, paddingRight: 16 }}
 					whileHover={{ scale: 1.15, paddingLeft: 32, paddingRight: 32, transition: { ease: "backOut", duration: 0.25 } }}
 					className={tw(styles.controls.buttons.base, styles.controls.buttons.send)}>
