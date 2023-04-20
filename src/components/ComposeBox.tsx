@@ -8,7 +8,7 @@ const styles = {
 		`fixed inset-0`,
 		`bg-[#ffffff80]`,
 		`backdrop-blur-[2px] backdrop-brightness-75`,
-		`z-50`
+		`z-40`
 	),
 	innerContainer: tw(
 		`fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`,
@@ -17,6 +17,7 @@ const styles = {
 		`shadow-xl`,
 		`transition-[width,height]`,
 		`flex flex-col items-stretch`,
+		`z-50`,
 		`w-[calc(100%-2rem)] sm:w-[calc(100%-8rem)] min-h-[12rem] h-3/4`,
 	),
 	inputBar: tw(
@@ -74,7 +75,9 @@ const ComposeBox = (props: { onClose?: () => void }) => {
 			initial={{ scale: 0.8, translateX: "-50%", translateY: "-50%", opacity: 0 }}
 			animate={{ scale: 1, translateX: "-50%", translateY: "-50%", opacity: 1, transition: { ease: "backOut" } }}
 			exit={{ scale: 0.8, translateX: "-50%", translateY: "-50%", opacity: 0 }}
-			className={styles.innerContainer}>
+			className={styles.innerContainer}
+			onClick={e => e.stopPropagation()}
+			>
 
 			<div className="flex">
 				<input className={tw(styles.inputBar, "grow")} placeholder="To" />
@@ -91,7 +94,7 @@ const ComposeBox = (props: { onClose?: () => void }) => {
 				<div className="grow"></div>
 				<motion.button
 					initial={{ scale: 1, paddingLeft: 16, paddingRight: 16 }}
-					whileHover={{ scale: 1.05, paddingLeft: 32, paddingRight: 32, transition: { ease: "backOut", duration: 0.25 } }}
+					whileHover={{ scale: 1.15, paddingLeft: 32, paddingRight: 32, transition: { ease: "backOut", duration: 0.25 } }}
 					className={tw(styles.controls.buttons.base, styles.controls.buttons.send)}>
 						Send <PaperAirplaneIcon className={styles.controls.icon.small} />
 				</motion.button>

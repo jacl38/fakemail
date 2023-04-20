@@ -98,7 +98,7 @@ const MailItem = (props: Email & { index: number }) => {
  			</label>
 		</div>
 
-		<NavLink to="/" className={styles.content.container}>
+		<NavLink to={`/mail?id=${props.id}`} className={styles.content.container}>
 			<span className={styles.content.sender}>{props.sender.name}</span>
 			<span className={styles.content.subject}>{props.subject}</span>
 			<div className="collapse w-full"></div>

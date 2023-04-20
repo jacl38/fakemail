@@ -97,7 +97,7 @@ const PageHeader = () => {
 		<header className={styles.container}>
 			<div className={styles.logo.container}>
 
-				<NavLink to="/" reloadDocument className={styles.logo.link}>
+				<NavLink to="/" replace className={styles.logo.link}>
 					<EnvelopeIcon className={tw(styles.icon.medium, "text-rose-700")} />
 					<p className={styles.logo.text}>fak<span className="font-semibold">email</span></p>
 				</NavLink>
