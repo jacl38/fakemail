@@ -9,7 +9,7 @@ const styles = {
 	container: tw(
 		`h-20 max-sm:h-[7rem] max-md:h-32 shrink-0`,
 		`border-b-2`,
-		`flex justify-between items-center max-md:pb-[4.25rem]`,
+		`flex justify-between items-center max-sm:pb-[3.5rem] max-md:pb-[4.25rem]`,
 		`py-2 px-4`,
 		`bg-white`,
 		`relative`,
