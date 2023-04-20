@@ -47,17 +47,26 @@ const styles = {
 			`border-2`,
 			`flex justify-stretch`,
 			`overflow-hidden`,
-			`divide-x-2`
+			`divide-x-2`,
+			`group`
 		),
-		link: tw(
+		buttonBase: tw(
 			`w-full`,
-			`flex justify-center`,
+			`flex justify-center`
+		),
+		buttonEnabled: tw(
 			`hover:bg-neutral-100 transition-colors`
 		),
-		icon: tw(
-			`text-neutral-400 hover:text-neutral-700`,
+		buttonDisabled: tw(),
+		iconBase: tw(
 			`w-6 h-6`,
 			`transition-colors`
+		),
+		iconEnabled: tw(
+			`text-neutral-500 group-hover:text-neutral-700`,
+		),
+		iconDisabled: tw(
+			`text-neutral-200`
 		)
 	}
 }
@@ -68,6 +77,7 @@ const MailViewHeader = (props: {
 	selectedIndex: number,
 	onPageChange?: (direction: number) => void
 	selectedPage: number,
+	pageCount: number,
 	emailCount: number
 }) => {
 	const { emails, categories } = useContext(MailContext);
@@ -91,11 +101,17 @@ const MailViewHeader = (props: {
 		</div>
 
 		<div className={styles.pageLinks.outerContainer}>
-			{/* {props.selectedPage * 50 + 1}-{Math.min(filteredEmails.length, (props.selectedPage + 1) * 50)} / {filteredEmails.length} */}
 			{props.selectedPage * 50 + 1}-{props.selectedPage * 50 + props.emailCount} / {filteredEmails.length}
 			<div className={styles.pageLinks.iconContainer}>
-				<button className={styles.pageLinks.link} onClick={() => props.onPageChange?.(-1)}><ChevronLeftIcon className={styles.pageLinks.icon} /></button>
-				<button className={styles.pageLinks.link} onClick={() => props.onPageChange?.(1)}><ChevronRightIcon className={styles.pageLinks.icon} /></button>
+
+				<button disabled={props.selectedPage == 0} className={tw(styles.pageLinks.buttonBase, props.selectedPage > 0 ? styles.pageLinks.buttonEnabled : styles.pageLinks.buttonDisabled)} onClick={() => props.onPageChange?.(-1)}>
+					<ChevronLeftIcon className={tw(styles.pageLinks.iconBase, props.selectedPage > 0 ? styles.pageLinks.iconEnabled : styles.pageLinks.iconDisabled)} />
+				</button>
+
+				<button disabled={props.selectedPage >= props.pageCount - 1} className={tw(styles.pageLinks.buttonBase, props.selectedPage < props.pageCount - 1 ? styles.pageLinks.buttonEnabled : styles.pageLinks.buttonDisabled)} onClick={() => props.onPageChange?.(1)}>
+					<ChevronRightIcon className={tw(styles.pageLinks.iconBase, props.selectedPage < props.pageCount - 1 ? styles.pageLinks.iconEnabled : styles.pageLinks.iconDisabled)} />
+				</button>
+				
 			</div>
 		</div>
 	</div>

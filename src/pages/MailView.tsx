@@ -24,7 +24,6 @@ const MailView = () => {
 	const [category, setCategory] = useState("all-mail");
 	const { emails, categories } = useContext(MailContext);
 	const [page, setPage] = useState(0);
-	const pageCount = Math.ceil(emails.length / 50);
 
 	useEffect(() => {
 		if((categories ?? []).length == 0) return;
@@ -43,6 +42,7 @@ const MailView = () => {
 	let filteredAndSortedEmails = (emails as Email[] ?? [])
 		.filter(email => email.categoryId == category || category == "all-mail");
 	filteredAndSortedEmails.sort((a, b) => b.timestamp - a.timestamp);
+	const pageCount = Math.ceil(filteredAndSortedEmails.length / 50);
 	filteredAndSortedEmails = filteredAndSortedEmails.slice(page * 50, (page + 1) * 50);
 
 	const selectedCategoryIndex = ((categories ?? []) as Category[]).map(c => c.id).indexOf(category);
@@ -56,6 +56,7 @@ const MailView = () => {
 				setPage(p => clamp(p + d, 0, pageCount - 1));
 			}}
 			selectedPage={page}
+			pageCount={pageCount}
 			emailCount={filteredAndSortedEmails.length}/>
 
 		<div className={styles.mailList.container}>
