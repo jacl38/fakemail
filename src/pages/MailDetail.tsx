@@ -4,6 +4,7 @@ import { Email } from "../utility/storedTypes";
 import { tw } from "../utility/tailwindUtil";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeftIcon, ClockIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion";
 
 const styles = {
 	outerContainer: tw(
@@ -27,8 +28,8 @@ const styles = {
 			)
 		},
 		from: {
-			container: tw(`flex space-x-2 items-center ml-4 shrink truncate`),
-			label: tw(`font-semibold animate-fadeIn truncate`)
+			container: tw(`flex space-x-2 items-center ml-4 shrink truncate select-none`),
+			label: tw(`font-semibold animate-fadeIn truncate`),
 		}
 	},
 	icon: {
@@ -54,6 +55,8 @@ const MailDetail = () => {
 	}, []);
 
 	const emailDate = new Date(thisEmail?.timestamp ?? 0);
+	const senderHasName = thisEmail?.sender.name.length ?? 0 > 0
+	const recipientHasName = thisEmail?.recipient.name.length ?? 0 > 0;
 
 	return <div className={styles.outerContainer}>
 
@@ -62,10 +65,32 @@ const MailDetail = () => {
 				className={tw(styles.topBar.button.base, styles.topBar.button.back)}>
 					<ChevronLeftIcon className="w-6 h-6" />
 			</button>
-			<h2 className={styles.topBar.from.container}>
+			<h2	className={styles.topBar.from.container}>
 				<UserCircleIcon className={tw(styles.icon.small, "max-sm:hidden")} />
-				<span className={styles.topBar.from.label}>{thisEmail?.sender.name}</span>
+				<span className={styles.topBar.from.label}>
+
+					{
+						senderHasName
+						? <>
+							<span className="max-lg:hidden">{thisEmail?.sender.name} ({thisEmail?.sender.address})</span>
+							<span className="lg:hidden">{thisEmail?.sender.name}</span>
+						</>
+						: <span>{thisEmail?.sender.address}</span>
+					}
+
+					&nbsp;&rarr;&nbsp;
+
+					{
+						recipientHasName
+						? <>
+							<span className="max-md:hidden">{thisEmail?.recipient.name} ({thisEmail?.recipient.address})</span>
+							<span className="md:hidden">{thisEmail?.recipient.name}</span>
+						</>
+						: <span>{thisEmail?.recipient.address}</span>
+					}
+				</span>
 			</h2>
+
 			<div className="grow"></div>
 			<div className="mr-4 sm:space-x-2 flex max-sm:flex-col max-sm:text-sm items-start animate-fadeIn shrink-0">
 				<span className="font-semibold">{emailDate.toLocaleString(undefined, { dateStyle: "medium" })}</span>
@@ -76,11 +101,10 @@ const MailDetail = () => {
 		</div>
 
 		<div className="grow overflow-y-scroll p-2 shrink-0">
+			<h3 className="italic lg:hidden">{thisEmail?.sender.address} &rarr; {thisEmail?.recipient.address}</h3>
 			<h3 className="font-semibold">{thisEmail?.subject}</h3>
 			<hr className="my-2 w-1/2 border-none h-0.5 bg-gradient-to-r from-neutral-200 to-transparent" />
-			<p>
-				{thisEmail?.body}
-			</p>
+			<p>{thisEmail?.body}</p>
 		</div>
 	</div>
 }

@@ -3,7 +3,9 @@ import { tw } from "../utility/tailwindUtil";
 import { Email } from "../utility/storedTypes";
 import { timeSpanToMilliseconds } from "../utility/mathUtils";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { MailContext } from "../main";
+import { StarIcon } from "@heroicons/react/24/solid";
 
 const styles = {
 	container: tw(
@@ -64,7 +66,9 @@ const styles = {
 	}
 }
 
-const MailItem = (props: Email & { index: number }) => {
+const MailItem = (props: Email & { index: number, selected: boolean, onSelected?: (selected: boolean) => void }) => {
+	const { emails, setEmails } = useContext(MailContext);
+
 	const mailDate = new Date(props.timestamp);
 	const mailAge = (new Date().valueOf() - mailDate.valueOf());
 
@@ -81,6 +85,18 @@ const MailItem = (props: Email & { index: number }) => {
 		}
 	}
 
+	const starEmail = (starred: boolean) => {
+		const thisEmail = emails.find(e => e.id == props.id);
+		if(!thisEmail) return;
+		thisEmail.categoryId = starred ? "starred" : "all-mail";
+
+		setEmails(currentEmails => {
+			const newEmails = currentEmails.filter(e => e.id != props.id);
+			newEmails.push(thisEmail);
+			return newEmails;
+		});
+	}
+
 	return <motion.div
 		initial={{ scale: 0.9, opacity: 0, translateY: 20 }}
 		whileInView={{ scale: 1, opacity: 1, translateY: 0, transition: { ease: "backOut" } }}
@@ -90,11 +106,17 @@ const MailItem = (props: Email & { index: number }) => {
 		<div className={styles.items.container}>
 
  			<label htmlFor={`selectEmailCheckbox-${props.id}`} className={styles.items.button}>
- 				<input id={`selectEmailCheckbox-${props.id}`} className="cursor-pointer" type="checkbox" />
+ 				<input onChange={e => props.onSelected?.(e.currentTarget.checked)} id={`selectEmailCheckbox-${props.id}`} className="cursor-pointer" type="checkbox" />
  			</label>
 
  			<label htmlFor={`starEmailCheckbox-${props.id}`} className={styles.items.button}>
- 				<input id={`starEmailCheckbox-${props.id}`} className="cursor-pointer" type="checkbox" />
+ 				<input checked={props.categoryId == "starred"} onChange={e => starEmail(e.currentTarget.checked)} id={`starEmailCheckbox-${props.id}`} className="cursor-pointer hidden" type="checkbox" />
+				<StarIcon className={tw(
+					`w-6 h-6`,
+					props.categoryId == "starred"
+						? `text-amber-400 stroke-amber-400`
+						: `stroke-neutral-500 text-transparent`
+				)} />
  			</label>
 		</div>
 

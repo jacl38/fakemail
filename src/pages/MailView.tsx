@@ -25,6 +25,8 @@ const MailView = () => {
 	const { emails, categories } = useContext(MailContext);
 	const [page, setPage] = useState(0);
 
+	const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
+
 	useEffect(() => {
 		if((categories ?? []).length == 0) return;
 		const urlSearch = new URLSearchParams(window.location.search);
@@ -39,6 +41,11 @@ const MailView = () => {
 		setCategory(selectedCategory);
 	}, [categories]);
 
+	useEffect(() => {
+		setPage(0);
+		setSelectedIDs([]);
+	}, [category]);
+
 	let filteredAndSortedEmails = (emails as Email[] ?? [])
 		.filter(email => email.categoryId == category || category == "all-mail");
 	filteredAndSortedEmails.sort((a, b) => b.timestamp - a.timestamp);
@@ -47,21 +54,33 @@ const MailView = () => {
 
 	const selectedCategoryIndex = ((categories ?? []) as Category[]).map(c => c.id).indexOf(category);
 
+	const selectEmail = (email: Email, selected: boolean) => {
+		setSelectedIDs(currentSelectedIDs => {
+			let newSelectedIDs = currentSelectedIDs.filter(id => id != email.id);
+			if(selected) {
+				newSelectedIDs = [email.id, ...currentSelectedIDs];
+			}
+			return newSelectedIDs;
+		});
+	}
+
 	return <div className={styles.outerContainer}>
 		<MailViewHeader
 			selectedCategory={category}
-			selectedIndex={selectedCategoryIndex}
+			selectedCategoryIndex={selectedCategoryIndex}
 			onSelect={setCategory}
 			onPageChange={d => {
 				setPage(p => clamp(p + d, 0, pageCount - 1));
 			}}
 			selectedPage={page}
 			pageCount={pageCount}
-			emailCount={filteredAndSortedEmails.length}/>
+			emailCount={filteredAndSortedEmails.length}
+			selectedIDS={selectedIDs}
+		/>
 
 		<div className={styles.mailList.container}>
 			<AnimatePresence>
-				{filteredAndSortedEmails.map((email, i) => <MailItem {...email} key={email.id} index={i}/>)}
+				{filteredAndSortedEmails.map((email, i) => <MailItem onSelected={selected => selectEmail(email, selected)} selected={selectedIDs.includes(email.id)} {...email} key={email.id} index={i}/>)}
 			</AnimatePresence>
 		</div>
 

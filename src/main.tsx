@@ -11,9 +11,9 @@ import { shuffleArray } from './utility/mathUtils'
 
 interface MailItems {
 	categories: Category[],
-	setCategories: (categories: Category[]) => void,
+	setCategories: (categories: Category[] | ((v: Category[]) => Category[])) => void,
 	emails: Email[],
-	setEmails: (emails: Email[]) => void
+	setEmails: (emails: Email[] | ((v: Email[]) => Email[])) => void
 }
 
 export const MailContext = createContext<MailItems>({

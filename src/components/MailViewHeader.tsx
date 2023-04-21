@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { tw } from "../utility/tailwindUtil"
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
+import { ArrowDownOnSquareStackIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"
 import MailCategoryItem from "./MailCategoryItem"
 import { Category, Email } from "../utility/storedTypes"
 import { motion } from "framer-motion"
@@ -15,14 +15,25 @@ const styles = {
 		`shadow-md`,
 		`relative`
 	),
-	checkBox: {
+	// checkBox: {
+	// 	container: tw(
+	// 		`w-8 h-8`,
+	// 		`flex justify-center items-center`,
+	// 		`cursor-pointer`
+	// 	),
+	// 	input: tw(
+	// 		`cursor-pointer`
+	// 	)
+	// },
+	deleteButton: {
 		container: tw(
-			`w-8 h-8`,
-			`flex justify-center items-center`,
-			`cursor-pointer`
-		),
-		input: tw(
-			`cursor-pointer`
+			// `bg-red-500`,
+			`px-2 h-8`,
+			`rounded-full overflow-hidden`,
+			`text-right`,
+			// `font-semibold text-white`,
+			`font-semibold border-2 border-red-500`,
+			`hover:bg-red-200 transition-colors`
 		)
 	},
 	sectionSelector: {
@@ -74,11 +85,12 @@ const styles = {
 const MailViewHeader = (props: {
 	onSelect?: (id: string) => void,
 	selectedCategory: string,
-	selectedIndex: number,
+	selectedCategoryIndex: number,
 	onPageChange?: (direction: number) => void
 	selectedPage: number,
 	pageCount: number,
-	emailCount: number
+	emailCount: number,
+	selectedIDS: number[]
 }) => {
 	const { emails, categories } = useContext(MailContext);
 
@@ -87,21 +99,60 @@ const MailViewHeader = (props: {
 	return <div className={styles.outerContainer}>
 
 		<div>
-			<label htmlFor="selectAllCheckbox" className={styles.checkBox.container}>
-				<input id="selectAllCheckbox" type="checkbox" className={styles.checkBox.input} />
-			</label>
+			{
+				props.selectedIDS.length > 0
+				&& <motion.button
+					layout
+					initial="rest"
+					whileHover="hover"
+					variants={{
+						rest: {
+							width: "2rem",
+							justifyItems: "center"
+						},
+						hover: {
+							width: "5.5rem",
+							justifyItems: "right"
+						},
+					}}
+					className={styles.deleteButton.container}
+				>
+					<motion.span
+						className="overflow-hidden absolute left-8"
+						variants={{
+							rest: {
+								width: 0,
+								translateY: "20%",
+								opacity: 0
+							},
+							hover: {
+								width: "auto",
+								translateY: 0,
+								opacity: 1
+							}
+						}}
+					>
+						Delete
+					</motion.span>
+					<span className="text-center mr-0.5">{props.selectedIDS.length}</span>
+				</motion.button>
+			}
 		</div>
 
 		<div className={styles.sectionSelector.container}>
 			{(categories as Category[] ?? []).map((category, i) => <MailCategoryItem {...category} onSelect={props.onSelect}/>)}
 			<motion.div layout
-				style={{ left: props.selectedIndex * 192 }}
+				style={{ left: props.selectedCategoryIndex * 192 }}
 				transition={{ ease: "backOut" }}
 				className="absolute w-48 h-full bg-black opacity-5 rounded-t-2xl top-1"></motion.div>
 		</div>
 
 		<div className={styles.pageLinks.outerContainer}>
-			{props.selectedPage * 50 + 1}-{props.selectedPage * 50 + props.emailCount} / {filteredEmails.length}
+			{
+				props.emailCount > 0
+					? <>{props.selectedPage * 50 + 1}-{props.selectedPage * 50 + props.emailCount} / {filteredEmails.length}</>
+					: <>No mail</>
+			}
 			<div className={styles.pageLinks.iconContainer}>
 
 				<button disabled={props.selectedPage == 0} className={tw(styles.pageLinks.buttonBase, props.selectedPage > 0 ? styles.pageLinks.buttonEnabled : styles.pageLinks.buttonDisabled)} onClick={() => props.onPageChange?.(-1)}>
