@@ -47,19 +47,10 @@ const App = () => {
 				sender: { address: "admin@fakemail.jclark.space", name: "fakemail Admin" },
 				recipient: { address: "me@fakemail.jclark.space", name: "Me" },
 				subject: "Your new fakemail account",
-				body: "body",
+				body: "Welcome to your new fakemail account! It's completely fake. Click the name of a folder to view the emails in that folder. Click the star icon next to an email to send it to the Starred folder. To send a fake email, click the pencil icon on the top right of the screen. Your sent mail will show up in the Sent folder.",
 				timestamp: Date.now()
 			});
 
-			emails.push(...[...Array(50)].map((_, i) => ({
-				id: i + 1,
-				categoryId: categories[Math.floor(Math.random() * categories.length)].id,
-				sender: { address: "sender@email.com", name: "Email Sender" },
-				recipient: { address: "me@fakemail.jclark.space", name: "Me" },
-				subject: shuffleArray("this is a test email".split(" "), i).join(" "),
-				body: shuffleArray("this is the body content of the test email".split(" "), i).join(" "),
-				timestamp: Date.now()
-			})));
 			setEmails(emails);
 		}
 		setInitialSetup(true);
